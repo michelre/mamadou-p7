@@ -9,7 +9,7 @@ import "../../Styles/stylesPages/home.css"
 const Home = () => {
 
     const [isAdmin, setIsAdmin] = useState(false);
-    // const [allPosts, setAllPosts] = useState([]);
+    const [allPosts, setAllPosts] = useState([]);
     const [userId, setUserId] = useState("");
     const [imageUrl,setImageUrl] = useState(null)
     const navigate = useNavigate();
@@ -34,6 +34,23 @@ const Home = () => {
         });
     };
 
+    const fetchAllPosts  = async () => {
+        await axios({
+            method: "GET",
+            url: `http://localhost:4200/api/post`,
+            withCredentials: true,
+            data: {
+                user_id: userId,
+            },
+        })
+            .then((res) => {
+                setAllPosts(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     // const fetchAllPosts = () => {
     //     axios({
     //       method: "GET",
@@ -50,9 +67,9 @@ const Home = () => {
     //         console.log(err);
     //       });
     //   };
-    
 
-    //********************************************  LES EFFETS  *******************************************/  
+
+    //********************************************  LES EFFETS  *******************************************/
     useEffect(() => {
         if (!localStorage.getItem("user_info")) {
           navigate("/login");
@@ -61,11 +78,11 @@ const Home = () => {
         const storageUserId = JSON.parse(localStorage.getItem("user_info")).user
           .user_id;
         setUserId(storageUserId);
-        const admin = JSON.parse(localStorage.getItem("user_info")).user.admin;    
+        const admin = JSON.parse(localStorage.getItem("user_info")).user.admin;
         if (admin === 1) {
           setIsAdmin(true);
         }
-        // fetchAllPosts()
+        fetchAllPosts()
       },[navigate]);
 
 
@@ -83,14 +100,14 @@ const Home = () => {
             </div>
             <div>
                 <Posts
-                // allPosts={allPosts}
+                allPosts={allPosts}
                 userId={userId}
                 getProfilePicture={getProfilePicture}
                 // fetchAllPosts={fetchAllPosts}
                 isAdmin={isAdmin}
                 />
             </div>
-        </div>    
+        </div>
         </>
     );
 };

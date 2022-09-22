@@ -28,7 +28,7 @@ exports.addPost = (req, res) => {
 
 exports.getAllPosts = (req, res, next) => {
     const sql =
-        "SELECT content, post_imageUrl, post_user_id, post_id, date_creation, user_firstname, user_lastname, user_picture FROM posts INNER JOIN users ON posts.post_user_id = users.user_id ORDER BY date_creation DESC;";
+        "SELECT content, post_imageUrl, post_user_id, post_id, user_firstname, user_lastname, user_picture FROM posts INNER JOIN users ON posts.post_user_id = users.user_id;";
     db.query(sql, (err, result) => {
         if (err) {
             res.status(404).json({ err });

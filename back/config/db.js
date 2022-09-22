@@ -3,9 +3,10 @@ const mysql = require("mysql");
 // Mise place de la connexion en Local
 const db = mysql.createConnection({
     host: "localhost",
-    username: "root",
-    password: "azerty",
-    database: "groupomania",
+    port: 8889,
+    user: "root",
+    password: "root",
+    database: "groupomania-mamadou",
 });
 db.connect(function(err) {
     if (err) throw err;

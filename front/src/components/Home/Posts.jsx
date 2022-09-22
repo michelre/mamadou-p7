@@ -5,13 +5,13 @@ import CardPost from './CardPost';
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
 
-const Posts = ({imageUrl}) => {
+const Posts = ({imageUrl, allPosts}) => {
   const [isAdmin, setIsAdmin] = useState(false);
-  const [allPosts, setAllPosts] = useState([]);
+  //const [allPosts, setAllPosts] = useState([]);
   const [userId, setUserId] = useState("");
   const navigate = useNavigate();
 
-  const fetchAllPosts  = async () => {
+  /*const fetchAllPosts  = async () => {
     await axios({
       method: "GET",
       url: `http://localhost:4200/api/post`,
@@ -31,7 +31,7 @@ const Posts = ({imageUrl}) => {
 
   useEffect(()=>{
     fetchAllPosts();
-  },[])
+  },[])*/
   useEffect(() => {
       if (!localStorage.getItem("user_info")) {
         navigate("/login");
@@ -40,12 +40,12 @@ const Posts = ({imageUrl}) => {
       const storageUserId = JSON.parse(localStorage.getItem("user_info")).user
         .user_id;
       const admin = JSON.parse(localStorage.getItem("user_info")).user.admin;
-  
+
       if (admin === 1) {
         setIsAdmin(true);
       }
       setUserId(storageUserId);
-    
+
   }, [navigate,userId]);
 // console.log(allPosts);
   return (

@@ -129,8 +129,7 @@ const SignUpForm = () => {
         },
       })
         .then((res) => {
-          setUid (JSON.parse(localStorage.getItem("user_info")).user
-          .user_id);
+          //setUid (JSON.parse(localStorage.getItem("user_info"))?.user?.user_id);
           console.log(uid);
           console.log(res);
           if (!res.data.errors) {
@@ -144,7 +143,7 @@ const SignUpForm = () => {
   return (
     <>
     {uid? "":<HeaderLog/>}
-    
+
       {formSubmit ? (
         <>
           <SigninForm />
