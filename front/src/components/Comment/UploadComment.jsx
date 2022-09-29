@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import "../../Styles/stylesComp/uploadComment.css"
 
 
-const UploadComment = ({post_id,userId}) => {
+const UploadComment = ({post_id,userId, fetchAllComments}) => {
 
     const [commentMsg,setCommentMsg]= useState("");
     const [longEmptyComt,setLongEmptyComt] = useState(true)
@@ -50,6 +50,7 @@ const UploadComment = ({post_id,userId}) => {
           })
             .then((res) => {
               setCommentMsg("")
+                fetchAllComments()
             })
             .catch((err) => {
               console.log(`Echec post commentaire : ${err}`);
@@ -62,9 +63,9 @@ const UploadComment = ({post_id,userId}) => {
             setLongEmptyComt(false);
           } else {
             setLongEmptyComt(true);
-          }    
+          }
     },[commentMsg.length])
-    
+
 
 
     return (

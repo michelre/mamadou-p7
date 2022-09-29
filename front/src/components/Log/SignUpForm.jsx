@@ -22,7 +22,7 @@ const SignUpForm = () => {
   const [isNumberOk, setIsNumberOk] = useState(false);
   const [isSpecialOk, setIsSpecialOk] = useState(false);
   const [isMinMaxOk, setIsMinMaxOk] = useState(false);
-  const [uid,setUid]= useState("")
+  const [uid]= useState("")
 
 
   // ************************** Les regex *******************************

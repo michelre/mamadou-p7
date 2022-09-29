@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faTrashCan } from "@fortawesome/free-solid-svg-icons";
@@ -9,16 +9,36 @@ import Comments from "./Comments";
 import "../../Styles/stylesComp/cardPost.css";
 import { dateParser } from "../../services/Utils";
 
-const CardPost = ({ post, isAdmin }) => {
+const CardPost = ({ post, isAdmin, fetchAllPosts }) => {
   const [isPostUser, setIsPostUser] = useState(false);
   const { post_id, post_user_id } = post;
   const [countLikes, setCountLikes] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
+  const [allcomments,setAllcomments]= useState([]);
   const userId = JSON.parse(localStorage.getItem("user_info")).user.user_id;
 
   const navigate = useNavigate();
 
   //********************************************** LES FN *********************************/
+
+  const fetchAllComments = useCallback(async () => {
+    await axios({
+      method: "GET",
+      url: `http://localhost:4200/api/comment/${post_id}/allcomments`,
+      withCredentials: true,
+      params: {
+        id: post_id,
+        user_id: userId,
+      },
+    })
+        .then((res) => {
+          setAllcomments(res.data);
+          // console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, [post_id, userId])
 
   const handleProfilPage = () => {
     navigate(`/profil`);
@@ -81,7 +101,7 @@ const CardPost = ({ post, isAdmin }) => {
         console.log(`Echec like post : ${err}`);
       });
   };
-  
+
 
   const handleDelete = () => {
     axios({
@@ -94,7 +114,7 @@ const CardPost = ({ post, isAdmin }) => {
       },
     })
       .then((res) => {
-        // fetchAllPosts();
+        fetchAllPosts()
       })
       .catch((err) => {
         console.log(`Echec suppression de post : ${err}`);
@@ -112,7 +132,9 @@ const CardPost = ({ post, isAdmin }) => {
   useEffect(() => {
     handleLikeCount();
     fetchLikes();
-  });
+    fetchAllComments()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchAllComments]);
 
 
   // console.log(post.post_imageUrl);
@@ -189,11 +211,13 @@ const CardPost = ({ post, isAdmin }) => {
             post={post}
             userId={userId}
             isAdmin={isAdmin}
+            allcomments={allcomments}
+            fetchAllComments={fetchAllComments}
           />
-          <UploadComment 
-          post_id={post_id} 
-          userId={userId} 
-
+          <UploadComment
+          post_id={post_id}
+          userId={userId}
+          fetchAllComments={fetchAllComments}
           />
         </div>
       </div>

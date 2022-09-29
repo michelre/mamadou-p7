@@ -50,8 +50,8 @@ const Home = () => {
             console.log(err);
           });
       };
-    
-    //********************************************  LES EFFETS  *******************************************/  
+
+    //********************************************  LES EFFETS  *******************************************/
     useEffect(() => {
         if (!localStorage.getItem("user_info")) {
           navigate("/login");
@@ -60,17 +60,18 @@ const Home = () => {
         const storageUserId = JSON.parse(localStorage.getItem("user_info")).user
           .user_id;
         setUserId(storageUserId);
-        const admin = JSON.parse(localStorage.getItem("user_info")).user.admin;    
+        const admin = JSON.parse(localStorage.getItem("user_info")).user.admin;
         if (admin === 1) {
           setIsAdmin(true);
         }
-        // fetchAllPosts()
+        fetchAllPosts()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       },[navigate]);
 
 
-      useEffect(()=>{
+      /*useEffect(()=>{
         fetchAllPosts()
-      })
+      })*/
 
 
     return (
@@ -79,6 +80,7 @@ const Home = () => {
         <div className="containerHomepage">
             <div>
                 <NewPost
+                    fetchAllPosts={fetchAllPosts}
                 // imageUrl={imageUrl}
                 />
             </div>
@@ -88,9 +90,10 @@ const Home = () => {
                 userId={userId}
                 // getProfilePicture={getProfilePicture}
                 isAdmin={isAdmin}
+                fetchAllPosts={fetchAllPosts}
                 />
             </div>
-        </div>    
+        </div>
         </>
     );
 };
