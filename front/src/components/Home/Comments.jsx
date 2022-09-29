@@ -8,7 +8,6 @@ const Comments = ({post_id,userId,post,isAdmin}) => {
 
     const [allcomments,setAllcomments]= useState([]);
 
-    useEffect(() => {
         async function fetchAllComments () {
            await axios({
                 method: "GET",
@@ -27,8 +26,9 @@ const Comments = ({post_id,userId,post,isAdmin}) => {
                   console.log(err);
                 });
         }
-        fetchAllComments ();
-      }, [post_id,userId]);
+        useEffect(()=>{
+          fetchAllComments()
+        })
 
     return (
         <div className="comments">

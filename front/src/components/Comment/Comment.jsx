@@ -24,7 +24,7 @@ const Comment = ({allCommentaire,post,isAdmin,userId}) => {
         //   },
         })
           .then((res) => {
-            if (res.status === 200) document.location.reload();
+            // if (res.status === 200) document.location.reload();
           })
           .catch((err) => {
             console.log(`Echec suppression de commentaire : ${err}`);

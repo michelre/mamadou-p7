@@ -5,16 +5,35 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import "../../Styles/stylesComp/uploadComment.css"
 
+
 const UploadComment = ({post_id,userId}) => {
 
     const [commentMsg,setCommentMsg]= useState("");
     const [longEmptyComt,setLongEmptyComt] = useState(true)
-
-
-
     const handleChange = (e)=>{
         setCommentMsg(e.target.value)
     }
+    useEffect(() => {
+       function fetchAllComments () {
+          axios({
+              method: "GET",
+              url: `http://localhost:4200/api/comment/${post_id}/allcomments`,
+              withCredentials: true,
+              params: {
+                id: post_id,
+                user_id: userId,
+              },
+            })
+              .then((res) => {
+                  // console.log(res.data);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+      }
+      fetchAllComments ();
+    }, [post_id,userId]);
+
 
     const handleSubmit = (e)=>{
         e.preventDefault();
@@ -30,14 +49,13 @@ const UploadComment = ({post_id,userId}) => {
             },
           })
             .then((res) => {
-              window.location.reload();
+              setCommentMsg("")
             })
             .catch((err) => {
               console.log(`Echec post commentaire : ${err}`);
             });
         }
     }
-
 
     useEffect(()=>{
         if (commentMsg.length >= 200 || commentMsg.length <= 0) {
@@ -46,6 +64,7 @@ const UploadComment = ({post_id,userId}) => {
             setLongEmptyComt(true);
           }    
     },[commentMsg.length])
+    
 
 
     return (

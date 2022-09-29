@@ -81,6 +81,7 @@ const CardPost = ({ post, isAdmin }) => {
         console.log(`Echec like post : ${err}`);
       });
   };
+  
 
   const handleDelete = () => {
     axios({
@@ -111,7 +112,10 @@ const CardPost = ({ post, isAdmin }) => {
   useEffect(() => {
     handleLikeCount();
     fetchLikes();
-  }, [handleLike, fetchLikes]);
+  });
+
+
+  // console.log(post.post_imageUrl);
   return (
     <>
       <div className="containercard">
@@ -144,7 +148,7 @@ const CardPost = ({ post, isAdmin }) => {
           <div className="containerPost">{post.content}</div>
 
           <div className="containerimgPost">
-            <img src={post.post_imageUrl ? post.post_imageUrl : ""} alt="" />
+            {post.post_imageUrl === "null" ? "":<img src = {post.post_imageUrl} alt=""/>}
           </div>
         </div>
 
@@ -186,7 +190,11 @@ const CardPost = ({ post, isAdmin }) => {
             userId={userId}
             isAdmin={isAdmin}
           />
-          <UploadComment post_id={post_id} userId={userId} />
+          <UploadComment 
+          post_id={post_id} 
+          userId={userId} 
+
+          />
         </div>
       </div>
     </>

@@ -11,65 +11,47 @@ const Home = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [allPosts, setAllPosts] = useState([]);
     const [userId, setUserId] = useState("");
-    const [imageUrl,setImageUrl] = useState(null)
+    // const [imageUrl,setImageUrl] = useState(null)
     const navigate = useNavigate();
 
     //*************************************************** LES FONCTIONS **********************************/
-    const getProfilePicture = () => {
-      axios({
-        method: "GET",
-        url: `http://localhost:4200/api/user/${userId}`,
-        withCredentials: true,
-      })
-        .then((res) => {
-            if(res.data[0].user_picture){
-              setImageUrl(res.data[0].user_picture);
-            }else{
-              setImageUrl( `http://localhost:4200/images/anonymousUser.svg`)
-            }
+    // const getProfilePicture = () => {
+    //   axios({
+    //     method: "GET",
+    //     url: `http://localhost:4200/api/user/${userId}`,
+    //     withCredentials: true,
+    //   })
+    //     .then((res) => {
+    //         if(res.data[0].user_picture){
+    //           setImageUrl(res.data[0].user_picture);
+    //         }else{
+    //           setImageUrl( `http://localhost:4200/images/anonymousUser.svg`)
+    //         }
 
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-
-    const fetchAllPosts  = async () => {
-        await axios({
-            method: "GET",
-            url: `http://localhost:4200/api/post`,
-            withCredentials: true,
-            data: {
-                user_id: userId,
-            },
-        })
-            .then((res) => {
-                setAllPosts(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-
-    // const fetchAllPosts = () => {
-    //     axios({
-    //       method: "GET",
-    //       url: `http://localhost:4200/api/post`,
-    //       withCredentials: true,
-    //       data: {
-    //         user_id: userId,
-    //       },
     //     })
-    //       .then((res) => {
-    //         setAllPosts(res.data);
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //       });
-    //   };
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // };
 
-
-    //********************************************  LES EFFETS  *******************************************/
+    const fetchAllPosts = () => {
+        axios({
+          method: "GET",
+          url: `http://localhost:4200/api/post`,
+          withCredentials: true,
+          data: {
+            user_id: userId,
+          },
+        })
+          .then((res) => {
+            setAllPosts(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+    
+    //********************************************  LES EFFETS  *******************************************/  
     useEffect(() => {
         if (!localStorage.getItem("user_info")) {
           navigate("/login");
@@ -78,17 +60,17 @@ const Home = () => {
         const storageUserId = JSON.parse(localStorage.getItem("user_info")).user
           .user_id;
         setUserId(storageUserId);
-        const admin = JSON.parse(localStorage.getItem("user_info")).user.admin;
+        const admin = JSON.parse(localStorage.getItem("user_info")).user.admin;    
         if (admin === 1) {
           setIsAdmin(true);
         }
-        fetchAllPosts()
+        // fetchAllPosts()
       },[navigate]);
 
 
-      // useEffect(()=>{
-      //   fetchAllPosts()
-      // })
+      useEffect(()=>{
+        fetchAllPosts()
+      })
 
 
     return (
@@ -96,18 +78,19 @@ const Home = () => {
         <Navbar/>
         <div className="containerHomepage">
             <div>
-                <NewPost/>
+                <NewPost
+                // imageUrl={imageUrl}
+                />
             </div>
             <div>
                 <Posts
                 allPosts={allPosts}
                 userId={userId}
-                getProfilePicture={getProfilePicture}
-                // fetchAllPosts={fetchAllPosts}
+                // getProfilePicture={getProfilePicture}
                 isAdmin={isAdmin}
                 />
             </div>
-        </div>
+        </div>    
         </>
     );
 };

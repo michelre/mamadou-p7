@@ -1,6 +1,3 @@
-/*Certaine requetes sont faites ,histoire de revoir quelques commande SQL*/
-
-
 
 -- CREATION TABLE USERS                       ATTention aux "" et ``  pour les requêtes dans les ctrls
 CREATE TABLE IF NOT EXISTS users (
@@ -15,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
   user_picture VARCHAR(250) DEFAULT "",
   createdAt TIMESTAMP ,
   updatedAt TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
-
+  
   PRIMARY KEY (user_id),
   UNIQUE (user_email)
 )ENGINE=InnoDB;
@@ -25,7 +22,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS posts (
   post_id int NOT NULL AUTO_INCREMENT,
   post_user_id int NOT NULL,
-  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   content TEXT NOT NULL,
   likes varchar(255)  DEFAULT NULL,
   active tinyint(1) NOT NULL DEFAULT 1,
@@ -33,6 +30,7 @@ CREATE TABLE IF NOT EXISTS posts (
   PRIMARY KEY (post_id),
   CONSTRAINT fk_Posts_Users_id  FOREIGN KEY (post_user_id) REFERENCES users (user_id) ON DELETE CASCADE
 )ENGINE=InnoDB;
+
 
 
 -- CREATION TABLE LIKES

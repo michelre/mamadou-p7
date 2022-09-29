@@ -5,12 +5,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { useRef } from "react";
 import { NavLink } from "react-router-dom";
 import "../../Styles/stylesComp/newPost.css";
 
 const NewPost = () => {
+  // console.log(imageUrl);
   const [msg, setMsg] = useState("");
   const [pictureUser, setPictureUser] = useState();
   // const[ msgImg,setMsgImg] = useState(null);
@@ -98,7 +99,8 @@ const NewPost = () => {
       <div className="posForm">
         <div className="imgTitre">
           <NavLink to="/profil">
-            <img src={pictureUser} alt="" className="imgPic" />
+            {user_id && <img src={pictureUser} alt="" className="imgPic" />}
+            
           </NavLink>
         </div>
         <br />
